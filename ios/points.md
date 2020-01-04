@@ -45,6 +45,9 @@ APNS
 擅长的
 难点
 减包
+frame和bounds有什么不同?
+NSString为什么用copy
+方法和选择器有何不同?
 injectionforxcode，原理
 自定义导航跳转动画
 method swizzling
@@ -182,6 +185,25 @@ NSTimer内存泄漏
 ios代码混淆方法，，https://blog.csdn.net/u014220518/article/details/95482006
 ios编译产物里面是否有方法名等信息
 enable BitCode是什么
+NSURLConnection
+volatile
+Core Animation
+Core Audio
+Core Data
+下面是 Cocoa Touch 中一小部分可用的框架：
+   音频和视频：Core Audio ，OpenAL ，Media Library ，AV Foundation
+   数据管理 ：Core Data ，SQLite
+   图形和动画 ：Core Animation ，OpenGL ES ，Quartz 2D
+   网络：Bonjour ，WebKit ，BSD Sockets
+   用户应用：Address Book ，Core Location ，Map Kit ，Store Kit
+
+如何让键盘弹出
+
+Socket开发，底层长连接
+
+
+如果我们不创建内存池，是否有内存池提供给我们?
+答:界面线程维护着自己的内存池，用户自己创建的数据线程，则需要创建该线程的内存池
 
 
 这个比较全
