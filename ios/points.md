@@ -6,7 +6,9 @@ SDWebImage内部实现，对比UIL
 复习表情面板用了哪些view实现  
 UICollectionView  
 左滑删除怎么实现  
-网络五层结构，tcp，udp，  
+网络五层结构，tcp，udp， 三次握手，四次握手 
+建立连接需要三次握手是因为双方各自需要对方的SYN(seq初始序号)和ACK,要满足这一点，至少需要三个包
+TCP是全双工通信，断开的时候需要四个包（FIN-ACK双方，FIN只是告诉对方我不会再发包了，但是可以接收，为什么被动方的ACK和FIN不能合并成一个包，因为可能还有包没有发完，是异步的，跟建立连接的时候不一样，但是ack要先发给主动方，免得它以为我没收到，一直重发）
 http，https，http2,http请求头和响应头，cookie，断点续传原理  
 MVVM vs MVC vs MVP，MVC缺点（想一下MVVM缺点，反怼面试官），  
 clock  
@@ -24,7 +26,11 @@ objc_msgsend，jspatch
 block，内存形式，为什么循环引用  
 weak的实现  
 arc，autorelease pool原理  
-进程与线程  
+进程与线程，进程是资源分配的最小单位，而线程是CPU调度的最小单位。
+资源包括（内存，文件句柄，信号量，消息队列）
+PCB进程控制块
+linux用户态的进程、线程基本满足上述概念，但内核态不区分进程和线程。可以认为，内核中统一执行的是进程，但有些是“普通进程”（对应进程process），有些是“轻量级进程”（对应线程pthread或npthread），都使用task_struct结构体保存保存。
+使用fork创建进程，使用pthread_create创建线程。两个系统调用最终都都调用了do_dork，而do_dork完成了task_struct结构体的复制，并将新的进程加入内核调度。
 持久化  
 FMDB  
 布局，layoutSubViews，masonry，约束布局计算约束  
@@ -53,7 +59,9 @@ injectionforxcode，原理
 method swizzling  
 类别与扩展的实现原理  
 引用计数  
-copy assign retain weak  
+Block是将函数及其执行上下文封装起来的对象。（闭包）
+copy assign retain weak  ，注意copy
+NSArray的copy并不copy item，属于浅拷贝
 屏幕单位  
 NSCache,自己设计一个缓存器  
 LRU算法  
@@ -160,6 +168,7 @@ oc消息机制
 为什么是三次握手？为什么是四次挥手？三次挥手不行吗？  
 HTTPS 密钥传输流程?  
 系统框架里使用了哪些设计模式？至少说6个?  
+设计模式的六大原则
 Alamofire 比直接使用 URLSession，优势是什么？  
 手写一下快排?  
 找出两个字符串的最大公共子字符串?  
@@ -209,9 +218,68 @@ Socket开发，底层长连接
 
 meshO格式
 
+Category和Class Extension的区别是什么？
+Class Extension在编译的时候，它的数据就已经包含在类信息中
+Category是在运行时，才会将数据合并到类信息中
+
+
+iOS沙箱怎么实现的，NSHomeDirectory，NSDocumentDirectory，NSCachesDirectory
+
+singleton实现，dispatch_once
++ (instancetype) sharedInstance
+{
+    static MyClass *instance = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        instance = [[MyClass alloc] init];
+    });
+    return instance;
+}
+
+一个C++源文件从文本到可执行文件经历的过程
+
+iOS的内存管理机制
+
+nil调用函数的返回值
+nil，NULL，NSNull
+
+反射的实现，类是元类的对象，isa指针，oc对象
+
+objc_msgSend_stret：处理待发送消息需要返回结构体的情况，但当结构体过大，导致CPU寄存器无法容纳时，会把消息交给另一个函数派发，把返回的机构体通过分配在栈上的某个变量处理。只有写动态化框架的时候会用到
+
+id NSObject  instancetype
+
+尾调用优化
 
 这个比较全  
 https://zhuanlan.zhihu.com/p/77721837  
 
+拼多多
+https://zhuanlan.zhihu.com/p/99341038
+
+clang -rewrite-objc WYTest.m
+
+__weak的实现
+
+block导致的内存泄露不一定是循环引用，block被其它对象持有了，导致self释放不掉
+
+多线程必须用的例子：读写文件
+
+mvc，mvp，mvvm是架构模式
+
+category为什么不能添加实例变量
+
+dyld
+
+Runtime的弊端：太灵活，根本没必要，很乱，没有真正的私有属性，可以到处hook，到处动态添加函数，代码维护性差。好像做客户端的整天没事干就想着怎么去做个动态化，搞个jspatch
+
+我不知道为什么会有单例这种设计模式，因为它就是反面向对象的
+
+block的写法
+直接声明：^(int){}
+声明变量：NSString*(^name)(int) = ^(int){}
+声明属性: @property (nonatomic, copy) NSString*(^name)(int);
+函数参数: - (void)setCallback:(NSString*(^)(int))name
+函数返回: - (NSString*(^)(int))getCallback;
 
 所有问题使用需要注意的点  
