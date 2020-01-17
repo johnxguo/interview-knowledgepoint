@@ -20,7 +20,7 @@ runloop，mode，nstimer
 viewcontroller的生命周期  
 app前后台  
 kvo  
-LLDB常用命令  
+LLDB常用命令， p, po, bt, expression, 
 NSDictionary实现  
 objc_msgsend，jspatch  
 block，内存形式，为什么循环引用  
@@ -39,7 +39,7 @@ FMDB
 浏览器发送http请求的过程  
 知道哪些设计模式  
 深拷贝 浅拷贝  
-性能优化（TableView,），缓存与批量，卡顿监控  
+性能优化（TableView,willDisplayCell,高度缓存，离屏渲染，离线渲染image context），缓存与批量，卡顿监控  
 YYModel, json转Model  
 架构设计  
 编译过程，xcode的编译选项  
@@ -65,6 +65,7 @@ NSArray的copy并不copy item，属于浅拷贝
 屏幕单位  
 NSCache,自己设计一个缓存器  
 LRU算法  
+画家算法
 深搜广搜，递归，queue  
 字符串翻转  
 encoding  
@@ -85,7 +86,8 @@ Volley，Eventbus
 delegate, notification,kvo,block优缺点  
 在一个UI的正中间实现一个正方形的红色视图有几种方式  
 做动画有几种方式  
-UIView和UIResponse的关系，触摸事件相应顺序  
+UIView和UIResponser的关系，触摸事件响应顺序 屏幕驱动IOKit-系统加入前台app的UIApplication的runloop-keywindow-hittest superview-subview
+
 UIViewcontroller的view什么时候加载  
 UILabel和自绘哪个性能好，内存少，为什么  
 ipV6,  
@@ -292,3 +294,21 @@ NSMutableArray如何保证线程安全（对内部每一个操作都加锁）
 首先业务代码应该尽量避免处理多线程问题
 
 IOS多线程使用GCD与信号量实现生产者与消费者模式
+
+Notification与多线程
+
+MachPort
+
+iOS中有很多进程通信的方式Mach Ports,Distributed Notifications,Distributed Objects,XPC等等
+
+如何让UITableView在滚动的时候还有动画。两种方法，一种是NSTimer注册到NSRunLoopCommonModes，另一种是在子线程处理timer，炮事件到主线程更新UI
+
+离屏渲染
+
+AsyncDisplayKit(Texture)
+
+cornerRadius一定触发离屏渲染吗
+
+从设计的角度来看，需要使用者理解底层原理的设计，是失败的设计
+
+GET请求的URL有长度限制，POST请求不会有长度限制
